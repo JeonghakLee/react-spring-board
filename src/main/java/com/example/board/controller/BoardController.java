@@ -3,13 +3,18 @@ package com.example.board.controller;
 import com.example.board.entity.Board;
 import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")@RestController
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
 @RequestMapping("/api")
 public class BoardController {
 
@@ -17,8 +22,8 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/board")
-    public List<Board> listAllPosts() {
-        return boardService.ListAllPosts();
+    public Page<Board> listAllPosts(@PageableDefault(page=0, size=20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return boardService.ListAllPosts(pageable);
     }
 
     @PostMapping("/board")
